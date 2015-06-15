@@ -1,5 +1,9 @@
 package com.paterson.Helpers;
 
+/**
+ * This class was taken from https://github.com/jrenner/gdx-smart-font and modified for use within this Game
+ * Thanks for the help! also - the BitmapFontWriter and ExampleMain are from this repository
+ */
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;

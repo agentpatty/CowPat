@@ -16,7 +16,7 @@ public class GameScreen implements Screen {
 	private GameRenderer renderer;
 	private float runTime;
 
-	public static int GAME_WIDTH = 350;
+	public static int GAME_WIDTH = 136;
 	public static int GAME_HEIGHT = 0;
 	
 	/**
@@ -26,9 +26,10 @@ public class GameScreen implements Screen {
 		float screenWidth = Gdx.graphics.getWidth();
 		float screenHeight = Gdx.graphics.getHeight();
 		float gameWidth = GameScreen.GAME_WIDTH;
-		float gameHeight = screenHeight / (screenWidth / gameWidth);
-		GameScreen.GAME_HEIGHT = (int)gameHeight;
-		GameScreen.GAME_WIDTH = (int)screenWidth;
+		float scaleRatio = screenWidth / gameWidth;
+		float gameHeight = screenHeight / scaleRatio;
+		GameScreen.GAME_HEIGHT = (int) gameHeight;
+		GameScreen.GAME_WIDTH = (int) screenWidth;
 		int midPointY = (int) (gameHeight / 2);
 		System.out.println("GameHeight: " + gameHeight + "   GameWidth: " + gameWidth + "   ScreenWidth: " + screenWidth + "   ScreenHeight: " + screenHeight);
 

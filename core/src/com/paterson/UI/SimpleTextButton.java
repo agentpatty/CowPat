@@ -56,6 +56,7 @@ public class SimpleTextButton extends ClickableObject {
 
 	@Override
 	public void addToStage(Stage stage, int screenX, int screenY) {
+		super.addToStage(stage, screenX, screenY);
 		textLabel.setPosition(screenX, screenY);
 		shadowLabel.setPosition(screenX+1, screenY+1);
 		if (isPressed) {
