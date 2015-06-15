@@ -61,5 +61,9 @@ public abstract class ClickableObject {
 	 */
 	public abstract boolean isTouchUp(int screenX, int screenY);
 	
-	public abstract void addToStage(Stage stage, int screenX, int screenY);
+	public void addToStage(Stage stage, int screenX, int screenY)
+	{
+		bounds.setX(screenX-1);
+		bounds.setY(screenY+1);	
+	}
 }

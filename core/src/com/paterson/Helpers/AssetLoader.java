@@ -171,13 +171,13 @@ public class AssetLoader {
 		
 		FileHandle fontFile = Gdx.files.local("fonts/WorstPaintJobEver.ttf");
 		SmartFontGenerator fontGen = new SmartFontGenerator();
-		Color brown = new Color(153, 51, 51, 1);
+		Color brown = new Color(139, 69, 19, 10);
 		smallFont = fontGen.createFont(fontFile, "font-18", 18);
 		medFont = fontGen.createFont(fontFile, "font-36", 36);
 		largeFont = fontGen.createFont(fontFile, "font-50", 50);
-		smallStyle = new Label.LabelStyle(smallFont,brown);
+		smallStyle = new Label.LabelStyle(smallFont, brown);
 		medStyle = new Label.LabelStyle(medFont, brown);
-		largeStyle = new Label.LabelStyle(largeFont,brown);
+		largeStyle = new Label.LabelStyle(largeFont, brown);
 		
 		font = new BitmapFont(Gdx.files.internal("fonts/poo.fnt"));
 		//font.setScale(.25f, -.25f);

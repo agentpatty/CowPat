@@ -78,11 +78,11 @@ public class GameRenderer {
 
 	public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
 		myWorld = world;
-		this.gameWidth = Gdx.graphics.getWidth();
-		this.gameHeight = Gdx.graphics.getHeight();
+		this.gameWidth = GameScreen.GAME_WIDTH;
+		this.gameHeight = gameHeight;
 		
-		this.midPointX = (int) this.gameHeight/2/2;
-		this.midPointY = (int) this.gameWidth;
+		this.midPointX = (int) this.gameWidth/2;
+		this.midPointY = midPointY;
 		this.backButtonY = 25;
 		this.backButtonX = 10;
 		this.headingY = midPointY + 40;
@@ -278,9 +278,9 @@ public class GameRenderer {
 		batcher.draw(cowAnimation.getKeyFrame(runTime), 45, midPointY/2 + 3, 50, 50);
 		
 		// Draw the buttons
-		newGameButton.addToStage(stage, midPointX-50, midPointY);
-		aboutButton.addToStage(stage, midPointX-60, midPointY - 40);
-		settingsButton.addToStage(stage, midPointX-38, midPointY - 80);
+		newGameButton.addToStage(stage, midPointX-30, midPointY);
+		aboutButton.addToStage(stage, midPointX-45, midPointY - 60);
+		settingsButton.addToStage(stage, midPointX-05, midPointY - 120);
 		exitButton.addToStage(stage, backButtonX, backButtonY);
 		stage.draw();
 //		newGameButton.draw(batcher, 29,midPointY);
