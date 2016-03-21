@@ -1,14 +1,12 @@
-package com.paterson.cowpat.desktop;
+package com.paterson.CowPat.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.paterson.cowpat.CowPat;
+import com.paterson.CowPat.CowPat;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.height = 600;
-		config.width = 350;
-		new LwjglApplication(new CowPat(null), config);
+		new LwjglApplication(new CowPat(), config);
 	}
 }

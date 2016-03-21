@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.input.GestureDetector;
+import com.paterson.CowPat.CowPat;
 import com.paterson.GameWorld.GameRenderer;
 import com.paterson.GameWorld.GameWorld;
 import com.paterson.Helpers.AssetLoader;
 import com.paterson.Helpers.InputHandler;
-import com.paterson.cowpat.CowPat;
 
 public class GameScreen implements Screen {
 
@@ -16,9 +16,8 @@ public class GameScreen implements Screen {
 	private GameRenderer renderer;
 	private float runTime;
 
-	public static int GAME_WIDTH = 136;
-	public static int GAME_HEIGHT = 0;
-	
+	public static final int GAME_WIDTH = 136;
+
 	/**
 	 * GameScreen constructor
 	 */
@@ -26,12 +25,9 @@ public class GameScreen implements Screen {
 		float screenWidth = Gdx.graphics.getWidth();
 		float screenHeight = Gdx.graphics.getHeight();
 		float gameWidth = GameScreen.GAME_WIDTH;
-		float scaleRatio = screenWidth / gameWidth;
-		float gameHeight = screenHeight / scaleRatio;
-		GameScreen.GAME_HEIGHT = (int) gameHeight;
-		GameScreen.GAME_WIDTH = (int) screenWidth;
+		float gameHeight = screenHeight / (screenWidth / gameWidth);
 		int midPointY = (int) (gameHeight / 2);
-		System.out.println("GameHeight: " + gameHeight + "   GameWidth: " + gameWidth + "   ScreenWidth: " + screenWidth + "   ScreenHeight: " + screenHeight);
+		//System.out.println("GameHeight: " + gameHeight + "   GameWidth: " + gameWidth + "   ScreenWidth: " + screenWidth + "   ScreenHeight: " + screenHeight);
 
 		world = new GameWorld(game,(int) gameHeight);
 		InputHandler iHandler = new InputHandler(world, screenWidth / gameWidth, screenHeight / gameHeight);
@@ -39,7 +35,7 @@ public class GameScreen implements Screen {
 		GestureDetector gd = new GestureDetector(iHandler);
 		im.addProcessor(gd);
 		im.addProcessor(iHandler);
-		
+
 		Gdx.input.setInputProcessor(im);
 		world.setInputHandler(iHandler);
 		renderer = new GameRenderer(world, (int) gameHeight, midPointY);
@@ -88,6 +84,5 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		AssetLoader.dispose();
 	}
-
 	
 }

@@ -8,6 +8,7 @@ import java.util.Deque;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
+import com.paterson.CowPat.CowPat;
 import com.paterson.GameObjects.Catcher;
 import com.paterson.GameObjects.Container;
 import com.paterson.GameObjects.Faller;
@@ -22,49 +23,48 @@ import com.paterson.Helpers.AssetLoader;
 import com.paterson.Helpers.IOHelper;
 import com.paterson.Helpers.InputHandler;
 import com.paterson.Screens.GameScreen;
-import com.paterson.cowpat.CowPat;
 
 public class GameWorld {
 
 	public static final int MAX_LIVES = 5;
 	private static final float VELOCITY_SCALE = 0.03f; // 0.05f - used earlier, may be better for android/emulator
 	private static final int TARGET_HIT_BONUS = 50;
-	
+
 	public boolean isWaitingOnPicture = false;
-	
+
 	private static final int CATCHER_HEIGHT = 20;
-	
+
 	private CowPat game;
 	private InputHandler iHandler;
-	
+
 	private ArrayList<Faller> fallingList;
 	private Deque<Poo> scoredPoo;
-	
+
 	private PooDropper pooDropper;
 	private Catcher catcher;
 	private Container container;
 	private Target target;
-	
+
 	private MoveableObject throwingContainer;
 	private Projectile pooProjectile;
-	
+
 	private int score = 0;
 	private int gameHeight;
 	private int groundLocation;
-	
+
 	private GameLevel currentLevel;
-	
+
 	private int numLives;
 	private Boolean isFallingGame;
 	private GameState currentState;
 	private GameState prePauseGameState;
 	private GameState preSettingsGameState;
-	
+
 	private int multiplier = 1;
 	private int numInRow = 0;
 
 	private Boolean menuMusicStarted = false;
-	
+
 	public enum GameState {
 		MAIN_MENU, SETTINGS_MENU, ABOUT_MENU,
 		READY, RUNNING, GAMEOVER, HIGHSCORE, LEVEL_COMPLETE, GAME_PAUSED,
@@ -72,7 +72,7 @@ public class GameWorld {
 	}
 
 	/**
-	 * Constructor for the GameWorld - sets the initial state, and the first level. 
+	 * Constructorfor the GameWorld - sets the initial state, and the first level.
 	 * @param game The running game
 	 * @param gameHeight The height of the screen
 	 */
@@ -101,52 +101,52 @@ public class GameWorld {
 	public void update(float delta) {
 		//runTime += delta;
 		switch (currentState) {
-		case MAIN_MENU:
-			if (!menuMusicStarted)
-			{
-				// First time through, start the music (if it is on)
-				menuMusicStarted = true;
-				if (AssetLoader.getMusicSetting())
+			case MAIN_MENU:
+				if (!menuMusicStarted)
 				{
-					AssetLoader.menuMusic.play();
+					// First time through, start the music (if it is on)
+					menuMusicStarted = true;
+					if (AssetLoader.getMusicSetting())
+					{
+						AssetLoader.menuMusic.play();
+					}
 				}
-			}
-			// Update running to have the game running continuously in the background
-			updateRunning(delta);
-			break;
-		case SETTINGS_MENU:
-			//Update running to have the game running continuously in the background
-			if (this.preSettingsGameState == GameState.MAIN_MENU)
-			{
-				// Only update if we came from main menu, otherwise we came from paused menu
+				// Update running to have the game running continuously in the background
 				updateRunning(delta);
-			}
-			break;
-		case ABOUT_MENU:
-			//Update running to have the game running continuously in the background
-			updateRunning(delta);
-			break;
-		case READY:
-			break;
-		case THROW_READY:
-			updateTarget(delta);
-			break;
-		case RUNNING:
-			updateRunning(delta);
-			break;
-		case THROW_RUNNING:
-			updateThrowingRunning(delta);
-			break;
-		case GAMEOVER:
-			break;
-		case HIGHSCORE:
-			break;
-		case LEVEL_COMPLETE:
-			break;
-		case THROW_COMPLETE:
-			break;
-		default:
-			break;
+				break;
+			case SETTINGS_MENU:
+				//Update running to have the game running continuously in the background
+				if (this.preSettingsGameState == GameState.MAIN_MENU)
+				{
+					// Only update if we came from main menu, otherwise we came from paused menu
+					updateRunning(delta);
+				}
+				break;
+			case ABOUT_MENU:
+				//Update running to have the game running continuously in the background
+				updateRunning(delta);
+				break;
+			case READY:
+				break;
+			case THROW_READY:
+				updateTarget(delta);
+				break;
+			case RUNNING:
+				updateRunning(delta);
+				break;
+			case THROW_RUNNING:
+				updateThrowingRunning(delta);
+				break;
+			case GAMEOVER:
+				break;
+			case HIGHSCORE:
+				break;
+			case LEVEL_COMPLETE:
+				break;
+			case THROW_COMPLETE:
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -174,7 +174,7 @@ public class GameWorld {
 			delta = .15f;
 		}
 		pooDropper.update(delta);
-		
+
 		// Switch direction once the catcher hits the edge
 		if (catcher.getX() + catcher.getWidth() >= this.getGameWidth() && catcher.isMovingRight())
 		{
@@ -184,10 +184,10 @@ public class GameWorld {
 		{
 			catcher.setMovingRight();
 		}
-		
+
 		catcher.update(delta);
 		container.update(delta);
-		
+
 		// check all the fallers for updates
 		for (Faller faller : fallingList)
 		{
@@ -248,7 +248,7 @@ public class GameWorld {
 				}
 			}
 		}
-		
+
 		// Check game state to see if we have run out of lives or completed the level
 		if (numLives <= 0)
 		{
@@ -269,9 +269,9 @@ public class GameWorld {
 		{
 			currentState = GameState.LEVEL_COMPLETE;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Update the running of the throwing of the poo game
 	 * @param delta The time between the last call to this procedure
@@ -281,7 +281,7 @@ public class GameWorld {
 		updateTarget(delta);
 		updateProjectile(delta);
 	}
-	
+
 	/**
 	 * Call the update of the target
 	 * @param delta time since last update
@@ -299,7 +299,7 @@ public class GameWorld {
 		}
 		this.target.update(delta);
 	}
-	
+
 	/**
 	 * Call the update of the projectile to reposition the object. Stops if it hits the target and assigns points
 	 * @param delta time since last call
@@ -325,29 +325,29 @@ public class GameWorld {
 				// Bonus points for hitting the target
 				if (pooProjectile.hitTarget(target))
 				{
-					this.addScore(TARGET_HIT_BONUS); 
+					this.addScore(TARGET_HIT_BONUS);
 				}
 			}
 			this.pooProjectile.update(delta);
 		}
 	}
-	
-	
+
+
 	public void setInputHandler(InputHandler iHandler)
 	{
 		this.iHandler = iHandler;
 	}
-	
+
 	public InputHandler getInputHandler()
 	{
 		return this.iHandler;
 	}
-	
+
 	public PooDropper getPooDropper()
 	{
 		return pooDropper;
 	}
-	
+
 	/**
 	 * All of the fallers that have fallen so far in the level, including scored ones
 	 * @return List of fallers that have started or finished falling
@@ -365,15 +365,15 @@ public class GameWorld {
 	public Target getTarget() {
 		return this.target;
 	}
-	
+
 	public Projectile getProjectile() {
 		return this.pooProjectile;
 	}
-	
+
 	public int getGameHeight() {
 		return gameHeight;
 	}
-	
+
 	public int getGameWidth() {
 		return GameScreen.GAME_WIDTH;
 	}
@@ -385,7 +385,7 @@ public class GameWorld {
 	public Container getContainer() {
 		return container;
 	}
-	
+
 	public int getNumberOfLives()
 	{
 		return this.numLives;
@@ -419,7 +419,7 @@ public class GameWorld {
 			AssetLoader.gameMusic.play();
 		}
 	}
-	
+
 	/**
 	 * Moves the game into the settings menu state
 	 */
@@ -427,11 +427,11 @@ public class GameWorld {
 		this.preSettingsGameState = this.currentState;
 		this.currentState = GameState.SETTINGS_MENU;
 	}
-	
+
 	public void goToAbout() {
 		this.currentState = GameState.ABOUT_MENU;
 	}
-	
+
 	public void goToMainMenu() {
 		this.currentState = GameState.MAIN_MENU;
 		if (AssetLoader.getMusicSetting())
@@ -440,7 +440,7 @@ public class GameWorld {
 			AssetLoader.menuMusic.play();
 		}
 	}
-	
+
 	public void prepareThrowing()
 	{
 		this.isFallingGame = false;
@@ -451,29 +451,29 @@ public class GameWorld {
 			AssetLoader.throwingMusic.play();
 		}
 	}
-	
+
 	public void startThrowing()
 	{
 		this.currentState = GameState.THROW_RUNNING;
 	}
-	
+
 	public void pauseGame()
 	{
 		// Keep track of the current state so we can return to it
 		this.prePauseGameState = currentState;
 		this.currentState = GameState.GAME_PAUSED;
 	}
-	
+
 	public void unPause()
 	{
-		this.currentState = this.prePauseGameState;		
+		this.currentState = this.prePauseGameState;
 	}
 
 	public void restartGame() {
 		this.resetGame();
 		this.ready();
 	}
-	
+
 	public void resetGame() {
 		// Reset to first level
 		this.currentLevel.reset();
@@ -490,7 +490,7 @@ public class GameWorld {
 	{
 		return this.isFallingGame;
 	}
-	
+
 	/**
 	 * Catch all method for all menus for convenience
 	 * @return True if the game is currently running one of the menus
@@ -499,19 +499,19 @@ public class GameWorld {
 	{
 		return this.currentState == GameState.MAIN_MENU || currentState == GameState.SETTINGS_MENU || currentState == GameState.ABOUT_MENU;
 	}
-	
+
 	public Boolean isMainMenu () {
 		return this.currentState == GameState.MAIN_MENU;
 	}
-	
+
 	public Boolean isSettingsMenu() {
 		return this.currentState == GameState.SETTINGS_MENU;
 	}
-	
+
 	public Boolean isAboutMenu() {
 		return this.currentState == GameState.ABOUT_MENU;
 	}
-	
+
 	public Boolean isReady() {
 		return this.currentState == GameState.READY;
 	}
@@ -519,8 +519,8 @@ public class GameWorld {
 	public Boolean isGameOver() {
 		return this.currentState == GameState.GAMEOVER;
 	}
-	
-	public Boolean isGamePaused() 
+
+	public Boolean isGamePaused()
 	{
 		return this.currentState == GameState.GAME_PAUSED;
 	}
@@ -528,7 +528,7 @@ public class GameWorld {
 	public boolean isHighScore() {
 		return this.currentState == GameState.HIGHSCORE;
 	}
-	
+
 	public Boolean isRunning() {
 		return this.currentState == GameState.RUNNING;
 	}
@@ -536,17 +536,17 @@ public class GameWorld {
 	public Boolean isLevelComplete() {
 		return this.currentState == GameState.LEVEL_COMPLETE;
 	}
-	
-	public Boolean isThrowingReady() 
+
+	public Boolean isThrowingReady()
 	{
 		return this.currentState == GameState.THROW_READY;
 	}
-	
+
 	public Boolean isThrowingRunning()
 	{
 		return this.currentState == GameState.THROW_RUNNING;
 	}
-	
+
 	public Boolean isThrowingComplete()
 	{
 		return this.currentState == GameState.THROW_COMPLETE;
@@ -557,9 +557,9 @@ public class GameWorld {
 	 */
 	private Poo createNewPoo(int size)
 	{
-		return new Poo(pooDropper,size, size -1, groundLocation, currentLevel.getFallSpeed()); 
+		return new Poo(pooDropper,size, size -1, groundLocation, currentLevel.getFallSpeed());
 	}
-	
+
 	/**
 	 * Tries to reuse a previously used Poo object, otherwise creates a new one
 	 */
@@ -575,7 +575,7 @@ public class GameWorld {
 			// Will only get here on the menu screen. Prevent creating infinite new objects be reusing fallen ones
 			fallingList.get(MathUtils.random(0,20)).reset(size, currentLevel.getFallSpeed());
 		}
-		else 
+		else
 		{
 			Poo newPoo = scoredPoo.pop();
 			newPoo.reset(size, currentLevel.getFallSpeed());
@@ -590,7 +590,7 @@ public class GameWorld {
 			AssetLoader.pooDrop.play();
 		}
 	}
-	
+
 	public void moveRight()
 	{
 		if (!this.catcher.isMovingRight())
@@ -598,7 +598,7 @@ public class GameWorld {
 			this.catcher.setMovingRight();
 		}
 	}
-	
+
 	public void moveLeft()
 	{
 		if (this.catcher.isMovingRight())
@@ -613,30 +613,30 @@ public class GameWorld {
 	public void selectNewTarget()
 	{
 		// Ask the platform dependent file chooser to find a file
-		if (this.game.getPictureChooser() != null)
-		{
-			System.out.println("Getting new picture path.");
+		//if (this.game.getPictureChooser() != null)
+		//{
+			//System.out.println("Getting new picture path.");
 			this.isWaitingOnPicture = true;
-			this.game.getPictureChooser().selectPicture();
-			System.out.println("Finished call to get new path.");
+			//this.game.getPictureChooser().selectPicture();
+			//System.out.println("Finished call to get new path.");
 			// This runs in a different activity so we handle the result in a different place
-		}
-		else 
-		{
+		//}
+		//else
+		//{
 			IOHelper.getNewTarget();
-		}
+		//}
 	}
-	
+
 	public void setNextTarget()
 	{
 		AssetLoader.moveToNextTarget();
 	}
-	
+
 	public void setPreviousTarget()
 	{
 		AssetLoader.moveToPreviousTarget();
 	}
-	
+
 	/**
 	 * Set a new high score
 	 * @param score The score to set as the new high score.
@@ -649,12 +649,12 @@ public class GameWorld {
 	public int getLevel() {
 		return this.currentLevel.getLevelNumber();
 	}
-	
+
 	public int getNumberInRow()
 	{
 		return this.numInRow;
 	}
-	
+
 	/**
 	 * Get the multiplier that is being used for every poo that is caught. Increases every 5 catches in a row
 	 * @return Multiplier applied to each poo when it is caught.
@@ -663,12 +663,12 @@ public class GameWorld {
 	{
 		return this.multiplier;
 	}
-	
+
 	public MoveableObject getThrowingContainer()
 	{
 		return this.throwingContainer;
 	}
-	
+
 	public void setThrowingContainerX(int newX)
 	{
 		// Adjust so that the touched screen location is the centre of the container
@@ -685,8 +685,8 @@ public class GameWorld {
 		// Now update the x position of the container
 		this.throwingContainer.setXPosition(screenX);
 	}
-	
-	
+
+
 	/**
 	 * Starts the poo being thrown at the target
 	 * @param velocityX speed of swipe across
@@ -700,7 +700,7 @@ public class GameWorld {
 			this.pooProjectile.startMoving(this.throwingContainer.getX() + (this.throwingContainer.getWidth()/2), this.throwingContainer.getY());
 		}
 	}
-	
+
 	/**
 	 * Closes the application
 	 */
@@ -715,7 +715,7 @@ public class GameWorld {
 	public void goToBackFromSettingsMenu() {
 		this.currentState = this.preSettingsGameState;
 	}
-	
+
 	/**
 	 * Procedure for cheating during testing and instantly fill the container
 	 */
@@ -727,4 +727,3 @@ public class GameWorld {
 		}
 	}
 }
-

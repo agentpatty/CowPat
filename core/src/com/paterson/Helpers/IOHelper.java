@@ -1,7 +1,10 @@
 package com.paterson.Helpers;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -21,7 +24,7 @@ public class IOHelper {
 		if (returnValue == JFileChooser.APPROVE_OPTION)
 		{
 			selectedFile = chooser.getSelectedFile();
-			System.out.println("FilePath selected: " + selectedFile.getPath());
+			//System.out.println("FilePath selected: " + selectedFile.getPath());
 			//AssetLoader.addTargetToList(selectedFile.getPath());
 			//AssetLoader.updateTargetImage(selectedFile.getPath(), 0, 0, 60, 60, false);
 			//IOHelper.copyFileToLocal(selectedFile.getPath());
@@ -29,7 +32,7 @@ public class IOHelper {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Not used any more 17/5
 	 * @param filePath
@@ -37,17 +40,19 @@ public class IOHelper {
 	public static void copyFileToLocal(String filePath)
 	{
 		String relativePath = filePath.substring(Gdx.files.getExternalStoragePath().length());
-		System.out.println("FilePath to use: " + relativePath);
+		//System.out.println("FilePath to use: " + relativePath);
 		FileHandle selectedPicture = Gdx.files.external(relativePath);
-		System.out.println("FilePath to copy from: " + selectedPicture.path());
+		//System.out.println("FilePath to copy from: " + selectedPicture.path());
 		if (selectedPicture.exists())
 		{
 			AssetLoader.addTargetToList(relativePath);
 		}
 		else
 		{
-			System.out.println("File to copy from does not exist");
+			//System.out.println("File to copy from does not exist");
 		}
-		
+
 	}
 }
+
+

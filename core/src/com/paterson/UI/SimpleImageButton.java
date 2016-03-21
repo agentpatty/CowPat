@@ -2,7 +2,6 @@ package com.paterson.UI;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 
 public class SimpleImageButton extends ClickableObject {
@@ -53,8 +52,4 @@ public class SimpleImageButton extends ClickableObject {
 		return false;
 	}
 
-	@Override
-	public void addToStage(Stage stage, int screenX, int screenY) {
-		// Nothing for now
-	}
 }

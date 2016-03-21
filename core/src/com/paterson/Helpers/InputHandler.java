@@ -6,94 +6,95 @@ import java.util.List;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.paterson.GameWorld.GameRenderer;
 import com.paterson.GameWorld.GameWorld;
 import com.paterson.UI.ClickableObject;
 import com.paterson.UI.SimpleCheckBox;
 import com.paterson.UI.SimpleImageButton;
 import com.paterson.UI.SimpleTextButton;
 
-public class InputHandler implements InputProcessor, GestureListener {
-	
+public class InputHandler implements InputProcessor, GestureDetector.GestureListener {
+
 	public static final float MIN_FLING_SPEED_REQUIRED = -300;
-	
+
 	private GameWorld myWorld;
 
 	private List<ClickableObject> menuButtons, aboutButtons, settingsOptions, pausedButtons, levelCompleteButtons;
 
-	private ClickableObject newGameButton, settingsButton, aboutButton, soundCheckbox, musicCheckbox, backButton, changeTargetButton, clearHighScoreButton, 
-		tryAgainButton, returnToMenuButton, exitButton,
-		pausedResumeButton, pausedExitButton, pausedSettingsButton, pauseButton, rightTargetButton, leftTargetButton;
+	private ClickableObject newGameButton, settingsButton, aboutButton, soundCheckbox, musicCheckbox, backButton, /**changeTargetButton,**/ clearHighScoreButton,
+			tryAgainButton, returnToMenuButton, /**exitButton,**/
+			pausedResumeButton, pausedExitButton, pausedSettingsButton, pauseButton, rightTargetButton, leftTargetButton;
 
 	private float scaleFactorX;
 	private float scaleFactorY;
 
 	public InputHandler(GameWorld myWorld, float scaleFactorX,
-			float scaleFactorY) {
+						float scaleFactorY) {
 		this.myWorld = myWorld;
-	
+
 		this.scaleFactorX = scaleFactorX;
 		this.scaleFactorY = scaleFactorY;
 
 		// Pause button used to pause the game while it is running
 		pauseButton = new SimpleImageButton(7, 7, AssetLoader.pauseButton, AssetLoader.pauseButton);
-		
+
 		// Create the buttons for the main menu
-		newGameButton = new SimpleTextButton(48, 8, "New Game", AssetLoader.largeStyle);
-		aboutButton = new SimpleTextButton(60, 8, "How to Play", AssetLoader.largeStyle);
-		settingsButton = new SimpleTextButton(36, 8, "Settings", AssetLoader.largeStyle);
-		exitButton = new SimpleTextButton(28, 8, "Exit", AssetLoader.medStyle);
+		newGameButton = new SimpleTextButton(80, 8, AssetLoader.translations.get(GameRenderer.KEY_NEW_GAME));
+		aboutButton = new SimpleTextButton(100, 8, AssetLoader.translations.get(GameRenderer.KEY_HOW_TO_PLAY));
+		settingsButton = new SimpleTextButton(75, 8, AssetLoader.translations.get(GameRenderer.KEY_SETTINGS));
+		//exitButton = new SimpleTextButton(35, 8, "Exit");
 		menuButtons = new ArrayList<ClickableObject>();
 		menuButtons.add(newGameButton);
 		menuButtons.add(aboutButton);
 		menuButtons.add(settingsButton);
-		menuButtons.add(exitButton);		
-		
+//		menuButtons.add(exitButton);
+
 		// Create the options to be selected in the Settings menu
 		soundCheckbox = new SimpleCheckBox(10, 10, AssetLoader.getSoundsSetting());
 		musicCheckbox = new SimpleCheckBox(10, 10, AssetLoader.getMusicSetting());
-		backButton = new SimpleTextButton(28, 8, "Back", AssetLoader.medStyle);
-		changeTargetButton = new SimpleTextButton(10, 8, "Select new Target", AssetLoader.medStyle);
+		backButton = new SimpleTextButton(35, 8, AssetLoader.translations.get(GameRenderer.KEY_BACK));
+		//changeTargetButton = new SimpleTextButton(10, 8, "Select new Target");
 		rightTargetButton = new SimpleImageButton(10, 15, AssetLoader.rightArrow, AssetLoader.rightArrow);
 		leftTargetButton = new SimpleImageButton(10, 15, AssetLoader.leftArrow, AssetLoader.leftArrow);
-		clearHighScoreButton = new SimpleTextButton(1, 10, "Clear High Score", AssetLoader.medStyle);
+		clearHighScoreButton = new SimpleTextButton(100, 8, AssetLoader.translations.get(GameRenderer.KEY_CLEAR_HIGH_SCORE));
 		settingsOptions = new ArrayList<ClickableObject>();
 		settingsOptions.add(soundCheckbox);
 		settingsOptions.add(musicCheckbox);
 		settingsOptions.add(backButton);
-		settingsOptions.add(changeTargetButton);
+		//settingsOptions.add(changeTargetButton);
 		settingsOptions.add(rightTargetButton);
 		settingsOptions.add(leftTargetButton);
 		settingsOptions.add(clearHighScoreButton);
-		
+
 		// Buttons for the about screen - only has a back button
 		aboutButtons = new ArrayList<ClickableObject>();
 		aboutButtons.add(backButton); // This was created above
-		
+
 		// Buttons displayed when level complete
-		tryAgainButton = new SimpleTextButton(1, 10, "Try Again?", AssetLoader.largeStyle);
-		returnToMenuButton = new SimpleTextButton(1, 10, "Back to Menu", AssetLoader.largeStyle);
+		tryAgainButton = new SimpleTextButton(65, 8, AssetLoader.translations.get(GameRenderer.KEY_TRY_AGAIN));
+		returnToMenuButton = new SimpleTextButton(80, 8, AssetLoader.translations.get(GameRenderer.KEY_BACK_TO_MENU));
 		levelCompleteButtons = new ArrayList<ClickableObject>();
 		levelCompleteButtons.add(tryAgainButton);
 		levelCompleteButtons.add(returnToMenuButton);
-		
+
 		// All the buttons for the paused menu
-		pausedResumeButton = new SimpleTextButton(28, 8, "Resume", AssetLoader.largeStyle);
-		pausedSettingsButton = new SimpleTextButton(36, 8, "Settings", AssetLoader.largeStyle);
-		pausedExitButton = new SimpleTextButton(24,8,"Quit", AssetLoader.largeStyle);
+		pausedResumeButton = new SimpleTextButton(40, 8, AssetLoader.translations.get(GameRenderer.KEY_RESUME));
+		pausedSettingsButton = new SimpleTextButton(45, 8, AssetLoader.translations.get(GameRenderer.KEY_SETTINGS));
+		pausedExitButton = new SimpleTextButton(24,8,AssetLoader.translations.get(GameRenderer.KEY_QUIT));
 		pausedButtons = new ArrayList<ClickableObject>();
 		pausedButtons.add(pausedExitButton);
 		pausedButtons.add(pausedResumeButton);
 		pausedButtons.add(pausedSettingsButton);
 	}
 
-	
+
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		screenX = scaleX(screenX);
 		screenY = scaleY(screenY);
-		
+
 		if (myWorld.isMainMenu())
 		{
 			for (ClickableObject obj : menuButtons)
@@ -161,7 +162,7 @@ public class InputHandler implements InputProcessor, GestureListener {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		// Gesture listener method
@@ -172,6 +173,8 @@ public class InputHandler implements InputProcessor, GestureListener {
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		screenX = scaleX(screenX);
 		screenY = scaleY(screenY);
+		//System.out.println("Current X: " + screenX);
+		//System.out.println("Current Y: " + screenY);
 		if (myWorld.isMainMenu())
 		{
 			if (newGameButton.isTouchUp(screenX, screenY))
@@ -189,11 +192,11 @@ public class InputHandler implements InputProcessor, GestureListener {
 				myWorld.goToAbout();
 				return true;
 			}
-			else if (exitButton.isTouchUp(screenX, screenY))
-			{
-				myWorld.exitGame();
-				return true;
-			}
+//			else if (exitButton.isTouchUp(screenX, screenY))
+//			{
+//				myWorld.exitGame();
+//				return true;
+//			}
 		}
 		else if (myWorld.isSettingsMenu())
 		{
@@ -209,12 +212,12 @@ public class InputHandler implements InputProcessor, GestureListener {
 				AssetLoader.setMusicSetting(((SimpleCheckBox)musicCheckbox).isChecked());
 				return true;
 			}
-			if (changeTargetButton.isTouchUp(screenX, screenY))
-			{
-				// Popup to select a photo from your gallery
-				myWorld.selectNewTarget();
-				return true;
-			}
+//			if (changeTargetButton.isTouchUp(screenX, screenY))
+//			{
+//				// Popup to select a photo from your gallery
+//				myWorld.selectNewTarget();
+//				return true;
+//			}
 			if (leftTargetButton.isTouchUp(screenX, screenY))
 			{
 				myWorld.setPreviousTarget();
@@ -236,7 +239,7 @@ public class InputHandler implements InputProcessor, GestureListener {
 				return true;
 			}
 		}
-		else if (myWorld.isAboutMenu()) 
+		else if (myWorld.isAboutMenu())
 		{
 			if (backButton.isTouchUp(screenX, screenY))
 			{
@@ -293,7 +296,7 @@ public class InputHandler implements InputProcessor, GestureListener {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -351,7 +354,7 @@ public class InputHandler implements InputProcessor, GestureListener {
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		System.out.println("Current X: " + screenX);
+		//System.out.println("Current X: " + screenX);
 		if (myWorld.isThrowingRunning())
 		{
 			myWorld.setThrowingContainerX(scaleX(screenX));
@@ -409,9 +412,9 @@ public class InputHandler implements InputProcessor, GestureListener {
 	}
 
 
-	public ClickableObject getTargetButton() {
-		return changeTargetButton;
-	}
+//	public ClickableObject getTargetButton() {
+//		return changeTargetButton;
+//	}
 
 
 	public ClickableObject getPausedResumeButton() {
@@ -426,7 +429,7 @@ public class InputHandler implements InputProcessor, GestureListener {
 	public ClickableObject getpausedSettingsButton() {
 		return pausedSettingsButton;
 	}
-	
+
 	public ClickableObject getPauseButton()
 	{
 		return pauseButton;
@@ -447,9 +450,9 @@ public class InputHandler implements InputProcessor, GestureListener {
 	}
 
 
-	public ClickableObject getExitButton() {
-		return exitButton;
-	}
+//	public ClickableObject getExitButton() {
+//		return exitButton;
+//	}
 
 	public ClickableObject getRightArrowButton()
 	{
@@ -459,8 +462,8 @@ public class InputHandler implements InputProcessor, GestureListener {
 	public ClickableObject getLeftArrowButton()
 	{
 		return leftTargetButton;
-	}	
-	
+	}
+
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
 		// Do nothing
@@ -480,7 +483,7 @@ public class InputHandler implements InputProcessor, GestureListener {
 		// Flung!!
 		if (myWorld.isThrowingRunning() && velocityY < MIN_FLING_SPEED_REQUIRED)
 		{
-			System.out.println("Flung poo!!! VelocityX = " + velocityX  + "  VelocityY = " + velocityY);
+			//System.out.println("Flung poo!!! VelocityX = " + velocityX  + "  VelocityY = " + velocityY);
 			myWorld.throwPooAtTarget(velocityY, velocityY);
 			return true;
 		}
@@ -511,7 +514,7 @@ public class InputHandler implements InputProcessor, GestureListener {
 
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
-			Vector2 pointer1, Vector2 pointer2) {
+						 Vector2 pointer1, Vector2 pointer2) {
 		// Do nothing
 		return false;
 	}

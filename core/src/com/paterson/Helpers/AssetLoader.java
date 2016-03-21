@@ -1,7 +1,5 @@
 package com.paterson.Helpers;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
@@ -13,14 +11,17 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class AssetLoader {
 
 	public static final String LOCAL_TARGETS_FOLDER_NAME = "targets";
 	public static final String EXTERNAL_TARGETS_FOLDER_NAME = "targets";
-	
-//	private static final String PREFS_INTERNAL_SETTING = "INTERNAL";
+
+	//	private static final String PREFS_INTERNAL_SETTING = "INTERNAL";
 //	private static final String PREFS_LOCAL_SETTING = "LOCAL";
 	private static final String PREFS_HIGH_SCORE = "highScore";
 	private static final String PREFS_SOUND = "sound";
@@ -33,20 +34,20 @@ public class AssetLoader {
 	private static final String PREFS_TARGET_PIC_HEIGHT = "targetHeight";
 	private static final String PREFS_TARGET_LIST = "";
 	private static final String PREFS_TARGET_INDEX = "targetListIndex";
-	
+
 	public static Texture texture, backgroundTexture, logoTexture;
-	public static ArrayList<TextureRegion> targetsList; 
+	public static ArrayList<TextureRegion> targetsList;
 	public static Integer targetIndex = 0;
 	public static TextureRegion logo, splashImage, background, cow1, cow2, cow3, cow4, poo, grass, catcherLeft, catcherRight, bucket, fullBucket, cross, target, pooSplat, checkBox, pauseButton,
-		stinkLine1, stinkLine2, stinkLine3, stinkLine4, stinkLine5, stinkLine6, stinkLine7, stinkLine8, stinkLine9, stinkLine10, lightningBolt, rightArrow,leftArrow;
+			stinkLine1, stinkLine2, stinkLine3, stinkLine4, stinkLine5, stinkLine6, stinkLine7, stinkLine8, stinkLine9, stinkLine10, lightningBolt, rightArrow,leftArrow;
 	public static Animation cowAnimation, stinkAnimation;
-	public static Sound pooDrop, pooCaught, targetHit, pooLand, gameOver; 
+	public static Sound pooDrop, pooCaught, targetHit, pooLand, gameOver;
 	public static Music menuMusic, gameMusic, throwingMusic;
-	public static BitmapFont font, easyFont, smallFont, medFont, largeFont;
+	public static BitmapFont font, shadowFont, easyFont;
 	private static Preferences prefs;
 
-	public static Label.LabelStyle smallStyle, medStyle, largeStyle;
-	
+	public static I18NBundle translations;
+
 	public static void load() {
 		// Create (or retrieve existing) preferences file
 		prefs = Gdx.app.getPreferences("CowPat");
@@ -69,37 +70,37 @@ public class AssetLoader {
 			prefs.putInteger(PREFS_TARGET_INDEX, 0);
 		}
 		if (!prefs.contains(PREFS_TARGET_PIC_PATH)) {
-			System.out.println("No target saved - Setting default target");
+			//System.out.println("No target saved - Setting default target");
 			prefs.putInteger(PREFS_TARGET_PIC_X, 0);
 			prefs.putInteger(PREFS_TARGET_PIC_Y, 0);
 			prefs.putInteger(PREFS_TARGET_PIC_WIDTH, 60);
 			prefs.putInteger(PREFS_TARGET_PIC_HEIGHT, 60);
 		}
 		prefs.flush();
-		
+
 		logoTexture = new Texture(Gdx.files.internal("images/CPatSystems.png"));
 		logoTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		splashImage = new TextureRegion(logoTexture);
-		
+
 		backgroundTexture = new Texture(Gdx.files.internal("images/background.png"));
 		backgroundTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		background = new TextureRegion(backgroundTexture);
-		background.flip(false, true);		
-		
+		background.flip(false, true);
+
 		texture = new Texture(Gdx.files.internal("images/texture.png"));
-		texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);	
-		
+		texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+
 		targetsList = new ArrayList<TextureRegion>();
 		AssetLoader.getAllTargets();
-		
+
 		pooSplat = new TextureRegion(texture, 62, 211, 60, 57);
 		pooSplat.flip(false, true);
-		
+
 		checkBox = new TextureRegion(texture, 0, 268, 40, 42);
 		checkBox.flip(false, true);
-		
+
 		//splashImage = new TextureRegion(texture, 0, 0, 80, 89);
-		
+
 		cow1 = new TextureRegion(texture, 0, 0, 80, 89);
 		cow2 = new TextureRegion(texture, 80, 0, 80, 89);
 		cow3 = new TextureRegion(texture, 160, 0, 80, 89);
@@ -112,25 +113,25 @@ public class AssetLoader {
 		TextureRegion[] cows = { cow1, cow2, cow3, cow4 };
 		cowAnimation = new Animation(0.11f, cows);
 		cowAnimation.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
-		
+
 		poo = new TextureRegion(texture, 0,90, 30,24);
 		poo.flip(false,true);
-		
+
 		lightningBolt = new TextureRegion(texture, 62,127,26,29);
-		lightningBolt.flip(false,true);
-	
+		lightningBolt.flip(false, true);
+
 		catcherLeft = new TextureRegion(texture, 0, 127, 57, 57);
 		catcherLeft.flip(true, true);
-		
+
 		catcherRight = new TextureRegion(texture, 0, 127, 57, 57);
 		catcherRight.flip(false, true);
-		
+
 		bucket = new TextureRegion(texture, 0, 188, 20, 23);
 		bucket.flip(false, true);
-		
+
 		fullBucket = new TextureRegion(texture, 21, 188, 20, 5);
 		fullBucket.flip(false, true);
-		
+
 		stinkLine1 = new TextureRegion(texture, 107, 189, 7, 20);
 		stinkLine2 = new TextureRegion(texture, 100, 189, 7, 20);
 		stinkLine3 = new TextureRegion(texture, 93, 189, 7, 20);
@@ -155,46 +156,41 @@ public class AssetLoader {
 		TextureRegion[] stinkLines = { stinkLine1, stinkLine2, stinkLine3, stinkLine4, stinkLine5, stinkLine6, stinkLine7, stinkLine8, stinkLine9, stinkLine10};
 		stinkAnimation = new Animation(0.2f, stinkLines);
 		stinkAnimation.setPlayMode(Animation.PlayMode.LOOP);
-		
+
 		cross = new TextureRegion(texture, 0, 212, 62, 59);
-		
+
 		pauseButton = new TextureRegion(texture, 41,271,27,39);
 		pauseButton.flip(false, true);
-		
+
 		grass = new TextureRegion(texture, 0, 116, 143, 10);
 		grass.flip(false, true);
-		
+
 		rightArrow = new TextureRegion(texture,69,269,16,26);
 		leftArrow = new TextureRegion(texture,69,269,16,26);
 		rightArrow.flip(false,true);
 		leftArrow.flip(true, true);
-		
-		FileHandle fontFile = Gdx.files.local("fonts/WorstPaintJobEver.ttf");
-		SmartFontGenerator fontGen = new SmartFontGenerator();
-		Color brown = new Color(139, 69, 19, 10);
-		smallFont = fontGen.createFont(fontFile, "font-18", 18);
-		medFont = fontGen.createFont(fontFile, "font-36", 36);
-		largeFont = fontGen.createFont(fontFile, "font-50", 50);
-		smallStyle = new Label.LabelStyle(smallFont, brown);
-		medStyle = new Label.LabelStyle(medFont, brown);
-		largeStyle = new Label.LabelStyle(largeFont, brown);
-		
-		font = new BitmapFont(Gdx.files.internal("fonts/poo.fnt"));
-		//font.setScale(.25f, -.25f);
+
+		font = new BitmapFont(Gdx.files.internal("data/poo.fnt"));
+		font.getData().setScale(.25f, -.25f);
 		font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
-		easyFont = new BitmapFont(Gdx.files.internal("fonts/BRLNSR-12.fnt"));
-		//easyFont.setScale(0.8f, -0.8f);
+
+        shadowFont = new BitmapFont(Gdx.files.internal("data/poo.fnt"));
+        shadowFont.getData().setScale(.25f, -.25f);
+        shadowFont.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        shadowFont.setColor(0, 0, 0, 10); // Set to black for shadow
+
+		easyFont = new BitmapFont(Gdx.files.internal("data/BerlinSans12.fnt"));
+		easyFont.getData().setScale(0.8f, -0.8f);
 		easyFont.setColor(Color.NAVY);
 		easyFont.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		// Sounds from http://www.freesfx.co.uk/
 		pooDrop = Gdx.audio.newSound(Gdx.files.internal("sounds/fart_2.wav"));
 		pooLand = Gdx.audio.newSound(Gdx.files.internal("sounds/poopSplat.wav"));
 		pooCaught = Gdx.audio.newSound(Gdx.files.internal("sounds/poopSound.wav"));
 		targetHit = Gdx.audio.newSound(Gdx.files.internal("sounds/laugh_goofy.wav"));
 		gameOver = Gdx.audio.newSound(Gdx.files.internal("sounds/laughing.wav"));
-		
+
 		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/steel_road.mp3"));
 		menuMusic.setLooping(true);
 		menuMusic.setVolume(0.7f);
@@ -203,6 +199,10 @@ public class AssetLoader {
 		gameMusic.setVolume(0.5f);
 		throwingMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/the_underworld_dark.mp3"));
 		throwingMusic.setLooping(true);
+
+		FileHandle baseFileHandle = Gdx.files.internal("data/CowPat");
+		//Locale locale = new Locale("en-GB");
+		translations = I18NBundle.createBundle(baseFileHandle);
 	}
 
 	public static void setHighScore(int val) {
@@ -213,18 +213,18 @@ public class AssetLoader {
 	public static int getHighScore() {
 		return prefs.getInteger(PREFS_HIGH_SCORE);
 	}
-	
+
 	/**
 	 * Get the list of targets paths
 	 * @return Comma separated list of paths to various pictures to be used as targets
 	 */
 	public static String getTargetsList()
 	{
-		System.out.println("Getting target list: " + prefs.getString(PREFS_TARGET_LIST));
+		//System.out.println("Getting target list: " + prefs.getString(PREFS_TARGET_LIST));
 		return prefs.getString(PREFS_TARGET_LIST);
 	}
-	
-	
+
+
 	public static void addTargetToList(String target)
 	{
 		if (!target.isEmpty())
@@ -233,7 +233,7 @@ public class AssetLoader {
 			list += target + ",";
 			prefs.putString(PREFS_TARGET_LIST, list);
 			prefs.flush();
-			
+
 			FileHandle entry = Gdx.files.external(target);
 			if (entry.exists())
 			{
@@ -241,22 +241,22 @@ public class AssetLoader {
 				targetTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 				TextureRegion newTarget = new TextureRegion(targetTexture);
 				AssetLoader.targetsList.add(newTarget);
-				System.out.println("Target Path: " + entry.path());
+				//System.out.println("Target Path: " + entry.path());
 				AssetLoader.setTargetListIndex(targetsList.size() - 1);
 				AssetLoader.setTargetImage(newTarget);
 			}
 		}
 	}
-	
+
 	public static void setSoundSetting(Boolean val) {
 		prefs.putBoolean(PREFS_SOUND, val);
 		prefs.flush();
 	}
-	
+
 	public static Boolean getSoundsSetting() {
 		return prefs.getBoolean(PREFS_SOUND);
 	}
-	
+
 	public static void setMusicSetting(Boolean val) {
 		prefs.putBoolean(PREFS_MUSIC, val);
 		prefs.flush();
@@ -266,47 +266,47 @@ public class AssetLoader {
 			AssetLoader.menuMusic.stop();
 		}
 	}
-	
+
 	public static Boolean getMusicSetting() {
 		return prefs.getBoolean(PREFS_MUSIC);
 	}
-	
+
 	public static void setTargetPath(String val) {
 		prefs.putString(PREFS_TARGET_PIC_PATH, val);
 		prefs.flush();
 	}
-	
+
 	private static Integer getTargetX() {
-		System.out.println("Target's X: " + prefs.getInteger(PREFS_TARGET_PIC_X));
+		//System.out.println("Target's X: " + prefs.getInteger(PREFS_TARGET_PIC_X));
 		return prefs.getInteger(PREFS_TARGET_PIC_X);
 	}
-	
+
 	private static Integer getTargetY() {
-		System.out.println("Target's Y: " + prefs.getInteger(PREFS_TARGET_PIC_Y));
+		//System.out.println("Target's Y: " + prefs.getInteger(PREFS_TARGET_PIC_Y));
 		return prefs.getInteger(PREFS_TARGET_PIC_Y);
 	}
-	
+
 	private static Integer getTargetWidth() {
-		System.out.println("Target's Width: " + prefs.getInteger(PREFS_TARGET_PIC_WIDTH));
+		//System.out.println("Target's Width: " + prefs.getInteger(PREFS_TARGET_PIC_WIDTH));
 		return prefs.getInteger(PREFS_TARGET_PIC_WIDTH);
 	}
-	
+
 	private static Integer getTargetHeight() {
-		System.out.println("Target's Height: " + prefs.getInteger(PREFS_TARGET_PIC_HEIGHT));
+		//System.out.println("Target's Height: " + prefs.getInteger(PREFS_TARGET_PIC_HEIGHT));
 		return prefs.getInteger(PREFS_TARGET_PIC_HEIGHT);
 	}
-	
+
 	private static Integer getTargetListIndex() {
-		System.out.println("Target's X: " + prefs.getInteger(PREFS_TARGET_INDEX));
+		//System.out.println("Target's X: " + prefs.getInteger(PREFS_TARGET_INDEX));
 		return prefs.getInteger(PREFS_TARGET_INDEX);
 	}
-	
+
 	private static void setTargetListIndex(Integer newIndex) {
 		AssetLoader.targetIndex = newIndex;
 		prefs.putInteger(PREFS_TARGET_INDEX, newIndex);
 		prefs.flush();
 	}
-	
+
 	/**
 	 * Updates the image used to throw poo at based on a new file that is selected by the user
 	 * @param targetFilePath The new file path for the target image
@@ -335,28 +335,28 @@ public class AssetLoader {
 		targetTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		AssetLoader.setTargetImage(new TextureRegion(targetTexture, 0 ,0 , 60, 60));
 	}
-	
+
 	private static void setTargetImage(TextureRegion newTarget)
 	{
-		System.out.println("Setting target image");
+		//System.out.println("Setting target image");
 		Texture targetTexture = newTarget.getTexture();
 		// Update the target if it has already been created as references to it are held by the Renderer Class
 		if (target == null)
 		{
 			target = new TextureRegion(targetTexture, AssetLoader.getTargetX(),AssetLoader.getTargetY(),AssetLoader.getTargetWidth(),AssetLoader.getTargetHeight());
 		}
-		else 
+		else
 		{
 			target.setRegion(new TextureRegion(targetTexture, AssetLoader.getTargetX(),AssetLoader.getTargetY(),AssetLoader.getTargetWidth(),AssetLoader.getTargetHeight()));
 		}
 		target.flip(false, true);
 	}
-	
+
 	private static void refreshTargetImage()
 	{
 		AssetLoader.setTargetImage(AssetLoader.targetsList.get(AssetLoader.targetIndex));
 	}
-	
+
 	/**
 	 * Moves to the next target in the list, or back to the beginning if we're at the end
 	 */
@@ -375,12 +375,12 @@ public class AssetLoader {
 				AssetLoader.targetIndex++;
 			}
 			// Set the next image as the selected target
-			System.out.println("Index updated to: " + AssetLoader.targetIndex);
+			//System.out.println("Index updated to: " + AssetLoader.targetIndex);
 			AssetLoader.setTargetListIndex(AssetLoader.targetIndex);
 			AssetLoader.refreshTargetImage();
 		}
 	}
-	
+
 	/**
 	 * Updates the target to the previous one in the list, or to the end of the list if we're at the beginning
 	 */
@@ -403,7 +403,7 @@ public class AssetLoader {
 			AssetLoader.refreshTargetImage();
 		}
 	}
-	
+
 	/**
 	 * Gets all the targets out of the internal folder and put them in an array.
 	 * It then goes through the comma separated list of external files and puts their images in the array
@@ -423,11 +423,11 @@ public class AssetLoader {
 				targetTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 				newTarget = new TextureRegion(targetTexture);
 				AssetLoader.targetsList.add(newTarget);
-				System.out.println("Target Path: " + entry.path());
+				//System.out.println("Target Path: " + entry.path());
 				if (index == AssetLoader.getTargetListIndex())
 				{
 					AssetLoader.targetIndex = index;
-					System.out.println("Set Target to List Index: " + AssetLoader.targetIndex);
+					//System.out.println("Set Target to List Index: " + AssetLoader.targetIndex);
 					AssetLoader.setTargetImage(newTarget);
 				}
 			}
@@ -439,7 +439,7 @@ public class AssetLoader {
 			String list = AssetLoader.getTargetsList();
 			for (String path : list.split(","))
 			{
-				System.out.println("Path: " + path);
+				//System.out.println("Path: " + path);
 				FileHandle entry = Gdx.files.external(path);
 				if (!path.isEmpty() && entry.exists())
 				{
@@ -447,11 +447,11 @@ public class AssetLoader {
 					targetTexture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 					newTarget = new TextureRegion(targetTexture);
 					AssetLoader.targetsList.add(newTarget);
-					System.out.println("Target Path: " + entry.path());
+					//System.out.println("Target Path: " + entry.path());
 					if (index == AssetLoader.getTargetListIndex())
 					{
 						AssetLoader.targetIndex = index;
-						System.out.println("Set Target to List Index: " + AssetLoader.targetIndex);
+						//System.out.println("Set Target to List Index: " + AssetLoader.targetIndex);
 						AssetLoader.setTargetImage(newTarget);
 					}
 					index++;
@@ -459,7 +459,7 @@ public class AssetLoader {
 			}
 		}
 	}
-	
+
 	/**
 	 * Dispose all assets
 	 */
@@ -481,5 +481,5 @@ public class AssetLoader {
 			region.getTexture().dispose();
 		}
 	}
-	
+
 }

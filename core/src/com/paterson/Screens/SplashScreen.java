@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.paterson.TweenAccessors.SpriteAccessor;
 import com.paterson.Helpers.AssetLoader;
-import com.paterson.cowpat.CowPat;
+import com.paterson.CowPat.CowPat;
 
 public class SplashScreen implements Screen {
 
@@ -22,13 +22,13 @@ public class SplashScreen implements Screen {
 	private Sprite sprite;
 	private CowPat game;
 
-	public SplashScreen(CowPat cowPat) {
-		this.game = cowPat;
+	public SplashScreen(CowPat game) {
+		this.game = game;
 	}
 
 	@Override
 	public void show() {
-		sprite = new Sprite(AssetLoader.splashImage);
+		sprite = new Sprite(AssetLoader.logoTexture);
 		sprite.setColor(1, 1, 1, 0);
 
 		float width = Gdx.graphics.getWidth();
@@ -37,7 +37,7 @@ public class SplashScreen implements Screen {
 		float scale = desiredWidth / sprite.getWidth();
 
 		sprite.setSize(sprite.getWidth() * scale, sprite.getHeight() * scale);
-		sprite.setPosition((width / 2) - (sprite.getWidth() / 2) - 20, (height / 2)
+		sprite.setPosition((width / 2) - (sprite.getWidth() / 2), (height / 2)
 				- (sprite.getHeight() / 2));
 		setupTween();
 		batcher = new SpriteBatch();

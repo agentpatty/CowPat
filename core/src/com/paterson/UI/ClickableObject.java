@@ -2,7 +2,6 @@ package com.paterson.UI;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public abstract class ClickableObject {
 	/**
@@ -44,7 +43,6 @@ public abstract class ClickableObject {
 	public void draw(SpriteBatch batcher, float x, float y) {
 		bounds.setX(x-1);
 		bounds.setY(y-1);
-		
 	}
 	/**
 	 * Does the start of the click within the bounds of this object?
@@ -60,10 +58,4 @@ public abstract class ClickableObject {
 	 * @return True if the x and y co-ordinates of the click intersect with the bounds of this object
 	 */
 	public abstract boolean isTouchUp(int screenX, int screenY);
-	
-	public void addToStage(Stage stage, int screenX, int screenY)
-	{
-		bounds.setX(screenX-1);
-		bounds.setY(screenY+1);	
-	}
 }

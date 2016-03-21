@@ -2,7 +2,6 @@ package com.paterson.UI;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.paterson.Helpers.AssetLoader;
 
 public class SimpleCheckBox extends ClickableObject {
@@ -52,12 +51,6 @@ public class SimpleCheckBox extends ClickableObject {
 
 	public Boolean isChecked() {
 		return this.isChecked;
-	}
-
-
-	@Override
-	public void addToStage(Stage stage, int screenX, int screenY) {
-		// Nothing for now
 	}
 
 }
